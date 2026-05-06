@@ -15,23 +15,28 @@
                 :remove_users (filter :remove users)
                 :atuin_login "{{ lookup('ansible.builtin.env', 'ATUIN_LOGIN') }}"
                 :ssh_key "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com"}
-        repos (-> (into [] (for [[repo worktrees] [["dotfiles-v3" ["ansible" "babashka"]]
-                                                   ["albertomiorin.com" ["albertomiorin" "big-config"]]
-                                                   ["big-config" ["deps-new" "hyperlith" "hyperlith-counter"]]
+        repos (-> (into [] (for [[repo worktrees] [["dotfiles-v3" []]
+                                                   ["albertomiorin.com" ["albertomiorin"]]
                                                    ["big-container" []]
-                                                   ["rama-jdbc" []]
-                                                   ["alice" []]
-                                                   ["walter" []]]]
+                                                   ["alice" []]]]
                              {:user main-user
                               :org "amiorin"
                               :repo repo
                               :branch "main"
                               :worktrees worktrees}))
-                  (into (for [[repo worktrees] [["hyperlith" []]]]
+                  (into (for [[repo worktrees] [["basecamp-once" []]
+                                                ["big-config" []]
+                                                ["once" []]
+                                                ["once-ai" []]
+                                                ["once-bigconfig" []]
+                                                ["once-bigconfig-marketplace" []]
+                                                ["once-caddy-redirect" []]
+                                                ["once-forms" []]
+                                                ["walter" []]]]
                           {:user main-user
-                           :org "amiorin"
+                           :org "bigconfig-ai"
                            :repo repo
-                           :branch "master"
+                           :branch "main"
                            :worktrees worktrees})))
         packages (->> ["fish"
                        "emacs"
