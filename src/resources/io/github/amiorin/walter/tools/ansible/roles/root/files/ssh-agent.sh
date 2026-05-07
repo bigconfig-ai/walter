@@ -1,3 +1,6 @@
 if [[ -n "$SSH_AUTH_SOCK" ]]; then
-    ln -sf "$SSH_AUTH_SOCK" "/tmp/$(whoami)@$(hostname).agent"
+    target="/tmp/$(whoami)@$(hostname).agent"
+    if [[ "$SSH_AUTH_SOCK" != "$target" ]]; then
+        ln -sf "$SSH_AUTH_SOCK" "$target"
+    fi
 fi
