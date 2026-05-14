@@ -2,399 +2,474 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Walter — Manual</title>
 <style>
   :root {
-    --bg: #0d1117;
-    --bg-elev: #161b22;
-    --bg-sidebar: #010409;
-    --border: #30363d;
-    --border-soft: #21262d;
-    --text: #c9d1d9;
-    --text-strong: #f0f6fc;
-    --text-dim: #8b949e;
-    --link: #58a6ff;
-    --link-hover: #79c0ff;
-    --accent: #d2a8ff;
-    --green: #7ee787;
-    --yellow: #f2cc60;
-    --orange: #ffa657;
-    --red: #ff7b72;
-    --code-bg: #161b22;
-    --code-inline: rgba(110,118,129,.35);
-    --kbd-bg: #2d333b;
-    --shadow: 0 1px 0 rgba(255,255,255,.03), 0 0 0 1px var(--border);
+    --bg: #ffffff;
+    --bg-soft: #f7f8fa;
+    --bg-code: #f5f6f8;
+    --text: #1f2328;
+    --text-muted: #57606a;
+    --text-soft: var(--text-muted);
+    --text-mute: var(--text-muted);
+    --border: #d0d7de;
+    --border-soft: #eaeef2;
+    --accent: #2f6feb;
+    --accent-soft: #ddebff;
+    --warn: #9a6700;
+    --danger: #cf222e;
+    --ok: #1a7f37;
+    --kbd-bg: #f6f8fa;
+    --kw: #cf222e;
+    --str: #0a3069;
+    --num: #953800;
+    --com: #6e7781;
+    --fn: #8250df;
+    --maxw-content: 820px;
   }
   * { box-sizing: border-box; }
-  html, body {
-    margin: 0; padding: 0;
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 16px;
+  }
+  body {
+    margin: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji";
-    font-size: 15px;
-    line-height: 1.6;
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--link); text-decoration: none; }
-  a:hover { color: var(--link-hover); text-decoration: underline; }
-  code, pre, kbd, .mono { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
-  code {
-    background: var(--code-inline);
-    padding: .15em .4em;
-    border-radius: 4px;
-    font-size: 85%;
-  }
-  pre {
-    background: var(--code-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 16px;
-    overflow-x: auto;
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre, kbd, samp, .mono {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
     font-size: 13px;
-    line-height: 1.55;
-    margin: 12px 0 18px;
   }
-  pre code { background: transparent; padding: 0; font-size: inherit; }
-  kbd {
+  code {
+    background: var(--bg-code);
+    padding: 1px 5px;
+    border-radius: 4px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  pre { margin: 14px 0; }
+  pre code {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    background: var(--bg-soft);
+    color: inherit;
+    overflow-x: auto;
+    overflow-wrap: normal;
+    white-space: pre;
+    word-break: normal;
+    line-height: 1.5;
+  }
+  kbd, .kbd {
     background: var(--kbd-bg);
     border: 1px solid var(--border);
     border-bottom-width: 2px;
     border-radius: 4px;
-    padding: 1px 6px;
-    font-size: 12px;
-    color: var(--text-strong);
+    padding: 1px 5px;
   }
+  hr {
+    border: 0;
+    border-top: 1px solid var(--border-soft);
+    margin: 32px 0;
+  }
+  ul, ol {
+    margin: 0 0 12px;
+    padding-left: 22px;
+  }
+  li { margin: 3px 0; }
 
-  /* layout */
-  .wrap { display: flex; min-height: 100vh; }
-  aside.sidebar {
-    width: 260px;
-    flex: 0 0 260px;
-    background: var(--bg-sidebar);
-    border-right: 1px solid var(--border);
-    padding: 24px 18px;
-    position: sticky; top: 0;
-    align-self: flex-start;
+  .layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    min-height: 100vh;
+  }
+  aside {
+    position: sticky;
+    top: 0;
+    align-self: start;
     height: 100vh;
     overflow-y: auto;
+    border-right: 1px solid var(--border-soft);
+    background: var(--bg-soft);
+    padding: 24px 18px;
   }
-  main {
-    flex: 1 1 auto;
-    min-width: 0;
-    padding: 40px 56px 80px;
-    max-width: 980px;
-    margin: 0 auto;
-  }
-  @media (max-width: 920px) {
-    .wrap { flex-direction: column; }
-    aside.sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); }
-    main { padding: 24px; }
-  }
-
-  /* sidebar */
-  .brand {
-    display: flex; align-items: center; gap: 10px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border-soft);
-    margin-bottom: 14px;
-  }
-  .brand .logo {
-    width: 32px; height: 32px;
-    background: linear-gradient(135deg, #58a6ff, #d2a8ff);
-    border-radius: 8px;
-    display: grid; place-items: center;
-    color: #0d1117; font-weight: 700; font-family: ui-monospace, monospace;
-  }
-  .brand .name { color: var(--text-strong); font-weight: 600; letter-spacing: .2px; }
-  .brand .sub { color: var(--text-dim); font-size: 12px; }
-  .toc-title {
-    font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
-    color: var(--text-dim); margin: 16px 0 6px;
-  }
-  .toc { list-style: none; padding: 0; margin: 0; }
-  .toc li { margin: 0; }
-  .toc a {
+  aside .brand {
     display: block;
-    padding: 5px 10px;
-    border-radius: 6px;
     color: var(--text);
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    padding: 0 6px 4px;
+    text-decoration: none;
+  }
+  aside .brand:hover { text-decoration: none; }
+  aside .tag {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin: 0 0 10px;
+    padding: 0 6px 10px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  aside nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 14px;
+  }
+  aside nav li { margin: 0; }
+  aside nav .group {
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 12px 6px 4px;
+  }
+  aside nav a {
+    display: block;
+    color: var(--text);
+    padding: 4px 8px;
+    border-radius: 4px;
     font-size: 13.5px;
   }
-  .toc a:hover { background: var(--bg-elev); text-decoration: none; }
-  .toc .sub-toc { padding-left: 12px; margin: 2px 0 4px; border-left: 1px solid var(--border-soft); }
-  .toc .sub-toc a { font-size: 12.5px; color: var(--text-dim); padding: 3px 8px; }
-  .toc .sub-toc a:hover { color: var(--text); }
-
-  /* headings */
-  h1, h2, h3, h4 { color: var(--text-strong); font-weight: 600; line-height: 1.25; }
-  h1 { font-size: 36px; margin: 0 0 8px; letter-spacing: -.5px; }
-  h2 {
-    font-size: 24px;
-    margin: 44px 0 14px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border-soft);
-    scroll-margin-top: 20px;
+  aside nav a:hover {
+    background: var(--accent-soft);
+    text-decoration: none;
   }
-  h3 { font-size: 18px; margin: 28px 0 10px; scroll-margin-top: 20px; }
-  h4 { font-size: 15px; margin: 18px 0 8px; color: var(--text-strong); }
-  p { margin: 8px 0 14px; }
-  ul, ol { padding-left: 22px; }
-  li { margin: 4px 0; }
-
-  /* hero */
-  .hero {
-    padding: 22px 24px;
-    background: linear-gradient(180deg, rgba(88,166,255,.06), rgba(210,168,255,.04));
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 28px;
-  }
-  .hero p { color: var(--text); margin: 0; font-size: 16px; }
-  .hero .tag {
-    display: inline-block;
-    background: rgba(126,231,135,.14);
-    color: var(--green);
-    border: 1px solid rgba(126,231,135,.3);
-    font-size: 11.5px; font-weight: 600;
-    padding: 2px 8px; border-radius: 999px;
-    letter-spacing: .04em; text-transform: uppercase;
-    margin-bottom: 10px;
+  aside nav a.sub {
+    padding-left: 18px;
+    font-size: 13px;
+    color: var(--text-muted);
   }
 
-  /* chip row */
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 24px; }
-  .chip {
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 4px 12px;
-    font-size: 12px;
-    color: var(--text-dim);
-  }
-  .chip b { color: var(--text-strong); font-weight: 600; }
-
-  /* callouts */
-  .callout {
-    border-left: 3px solid var(--link);
-    background: rgba(88,166,255,.06);
-    padding: 12px 16px;
-    margin: 14px 0;
-    border-radius: 0 8px 8px 0;
-    font-size: 14px;
-  }
-  .callout.warn { border-color: var(--yellow); background: rgba(242,204,96,.08); }
-  .callout.danger { border-color: var(--red); background: rgba(255,123,114,.08); }
-  .callout.tip { border-color: var(--green); background: rgba(126,231,135,.07); }
-  .callout .label {
-    display: inline-block;
-    font-weight: 700; font-size: 11px;
-    text-transform: uppercase; letter-spacing: .1em;
-    margin-right: 8px;
-  }
-  .callout.warn .label { color: var(--yellow); }
-  .callout.danger .label { color: var(--red); }
-  .callout.tip .label { color: var(--green); }
-  .callout .label.info { color: var(--link); }
-
-  /* tables */
-  table {
+  main {
+    padding: 40px 56px 80px;
+    max-width: calc(var(--maxw-content) + 112px);
+    min-width: 0;
     width: 100%;
-    border-collapse: collapse;
-    margin: 12px 0 22px;
-    font-size: 14px;
   }
-  th, td {
+  main h1,
+  main h2,
+  main h3,
+  main h4 {
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0;
+  }
+  main h1 {
+    font-size: 32px;
+    margin: 0 0 4px;
+    letter-spacing: -0.015em;
+  }
+  main h2 {
+    font-size: 22px;
+    margin: 44px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-soft);
+    letter-spacing: -0.01em;
+  }
+  main h3 {
+    font-size: 17px;
+    margin: 28px 0 8px;
+  }
+  main h4 {
+    font-size: 14px;
+    margin: 20px 0 6px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  main p,
+  main ul,
+  main ol {
+    max-width: var(--maxw-content);
+  }
+  p {
+    margin: 0 0 12px;
+    color: var(--text);
+  }
+  p.lead {
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+
+  table {
+    border-collapse: collapse;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 12px 0 18px;
+    font-size: 13.5px;
+  }
+  th,
+  td {
     text-align: left;
-    padding: 8px 12px;
-    border: 1px solid var(--border);
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border-soft);
+    vertical-align: top;
   }
   th {
-    background: var(--bg-elev);
-    color: var(--text-strong);
+    background: var(--bg-soft);
     font-weight: 600;
-    font-size: 12.5px;
-    text-transform: uppercase;
-    letter-spacing: .04em;
-  }
-  td code { font-size: 12.5px; }
-
-  /* diagram */
-  .diagram {
-    background: var(--code-bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px;
-    margin: 16px 0;
-    font-family: ui-monospace, monospace;
-    font-size: 12.5px;
-    line-height: 1.5;
     color: var(--text);
-    overflow-x: auto;
   }
-  .diagram .arrow { color: var(--accent); }
-  .diagram .box { color: var(--green); }
-  .diagram .label { color: var(--yellow); }
-  .diagram .dim { color: var(--text-dim); }
+  td code { white-space: nowrap; }
 
-  /* grid cards */
+  .note {
+    background: var(--bg-soft);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  .note.warn { border-left-color: var(--warn); }
+  .note.ok { border-left-color: var(--ok); }
+  .note.danger { border-left-color: var(--danger); }
+  .note p:last-child { margin-bottom: 0; }
+  .note .label {
+    display: inline-block;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+
   .grid {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    margin: 12px 0 22px;
+    margin: 14px 0;
   }
   .card {
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    padding: 14px;
+    background: var(--bg);
   }
-  .card h4 { margin: 0 0 6px; color: var(--text-strong); font-size: 14.5px; }
-  .card p { margin: 0; color: var(--text-dim); font-size: 13.5px; }
-  .card code { font-size: 12px; }
+  .card h4 {
+    margin: 0 0 6px;
+    color: var(--text);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 14px;
+  }
+  .card .sub {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    margin-bottom: 8px;
+  }
+  .card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13.5px;
+  }
+  .card ul {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 13px;
+  }
 
-  /* package columns */
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 14px 0 18px;
+  }
+  .pipeline .stage {
+    border: 1px solid var(--border-soft);
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .pipeline .stage .n {
+    display: inline-block;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    margin-bottom: 6px;
+  }
+  .pipeline .stage .label {
+    color: var(--text);
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .pipeline .stage .sub {
+    color: var(--text-muted);
+    font-size: 10.5px;
+  }
+
+  .pill,
+  .card .pill {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+  }
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
   .cols-3 {
     column-count: 3;
     column-gap: 24px;
     margin: 10px 0 18px;
+    padding-left: 0;
+    list-style: none;
+  }
+  .cols-3 li {
+    break-inside: avoid;
+    margin: 2px 0;
+    font-size: 13.5px;
   }
   @media (max-width: 720px) { .cols-3 { column-count: 2; } }
-  .cols-3 li { break-inside: avoid; }
 
-  /* anchor links */
-  .anchor {
-    color: var(--text-dim);
-    opacity: 0;
-    margin-left: 8px;
-    transition: opacity .15s;
-    font-weight: 400;
-    text-decoration: none;
+  .kw { color: var(--kw); }
+  .str { color: var(--str); }
+  .num { color: var(--num); }
+  .com {
+    color: var(--com);
+    font-style: italic;
   }
-  h2:hover .anchor, h3:hover .anchor { opacity: 1; }
+  .fn { color: var(--fn); }
+  .ns { color: var(--text-muted); }
 
-  hr { border: 0; border-top: 1px solid var(--border-soft); margin: 32px 0; }
-
-  /* footer */
-  footer {
-    margin-top: 60px;
-    padding-top: 22px;
-    border-top: 1px solid var(--border-soft);
-    color: var(--text-dim);
-    font-size: 13px;
+  section,
+  h2,
+  h3 {
+    scroll-margin-top: 16px;
   }
 
-  /* small util */
-  .muted { color: var(--text-dim); }
-  .strong { color: var(--text-strong); }
-  .pill {
-    display: inline-block;
-    padding: 1px 8px;
-    border-radius: 999px;
-    font-size: 11.5px;
-    font-weight: 600;
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    color: var(--text-strong);
-    margin-right: 6px;
-    letter-spacing: .03em;
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside {
+      position: static;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    main { padding: 24px 20px 60px; }
+    .grid { grid-template-columns: 1fr; }
+    .pipeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
-  .pill.blue { color: var(--link); border-color: rgba(88,166,255,.4); background: rgba(88,166,255,.08); }
-  .pill.green { color: var(--green); border-color: rgba(126,231,135,.4); background: rgba(126,231,135,.06); }
-  .pill.purple { color: var(--accent); border-color: rgba(210,168,255,.4); background: rgba(210,168,255,.07); }
-  .pill.yellow { color: var(--yellow); border-color: rgba(242,204,96,.4); background: rgba(242,204,96,.06); }
 
-  /* code annotations (manual color spans) */
-  .c-key { color: var(--red); }
-  .c-str { color: #a5d6ff; }
-  .c-fn { color: #d2a8ff; }
-  .c-com { color: var(--text-dim); font-style: italic; }
-  .c-kw { color: var(--red); }
-  .c-num { color: var(--orange); }
-  .c-var { color: #ffa657; }
+  @media (max-width: 520px) {
+    main { padding: 22px 16px 56px; }
+    aside { padding: 20px 14px; }
+    .pipeline { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="layout">
+  <aside>
+    <a href="https://github.com/amiorin/walter" class="brand">← walter</a>
+    <div class="tag">manual · v1</div>
+    <nav>
+      <div class="group">Get Started</div>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#quickstart">Quick start</a></li>
+        <li><a href="#prereqs">Prerequisites</a></li>
+      </ul>
 
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="logo">W</div>
-      <div>
-        <div class="name">Walter</div>
-        <div class="sub">Cloud devbox in one command</div>
-      </div>
-    </div>
+      <div class="group">Configuration</div>
+      <ul>
+        <li><a href="#config-env">Environment variables</a></li>
+        <li><a href="#config-oci">OCI parameters</a></li>
+        <li><a href="#config-hcloud">Hetzner parameters</a></li>
+      </ul>
 
-    <div class="toc-title">Manual</div>
-    <ul class="toc">
-      <li><a href="#overview">Overview</a></li>
-      <li><a href="#quickstart">Quick start</a></li>
-      <li><a href="#prereqs">Prerequisites</a></li>
-      <li><a href="#configuration">Configuration</a>
-        <ul class="sub-toc">
-          <li><a href="#config-env">Environment variables</a></li>
-          <li><a href="#config-oci">OCI parameters</a></li>
-          <li><a href="#config-hcloud">Hetzner parameters</a></li>
-        </ul>
-      </li>
-      <li><a href="#commands">Commands</a>
-        <ul class="sub-toc">
-          <li><a href="#cmd-walter">bb walter</a></li>
-          <li><a href="#cmd-tofu">bb tofu</a></li>
-          <li><a href="#cmd-ansible">bb ansible</a></li>
-          <li><a href="#cmd-ansible-local">bb ansible-local</a></li>
-          <li><a href="#cmd-misc">tidy, test</a></li>
-        </ul>
-      </li>
-      <li><a href="#workflow">The create workflow</a></li>
-      <li><a href="#architecture">Architecture</a>
-        <ul class="sub-toc">
-          <li><a href="#arch-namespaces">Namespaces</a></li>
-          <li><a href="#arch-bigconfig">big-config engine</a></li>
-          <li><a href="#arch-rendering">Template rendering</a></li>
-          <li><a href="#arch-profiles">Profiles &amp; .dist/</a></li>
-        </ul>
-      </li>
-      <li><a href="#what-installed">What gets installed</a>
-        <ul class="sub-toc">
-          <li><a href="#inst-system">System (root)</a></li>
-          <li><a href="#inst-user">User (ubuntu)</a></li>
-          <li><a href="#inst-packages">Devbox packages</a></li>
-          <li><a href="#inst-asdf">asdf languages</a></li>
-          <li><a href="#inst-repos">Cloned repos</a></li>
-        </ul>
-      </li>
-      <li><a href="#customization">Customization</a></li>
-      <li><a href="#repl">REPL development</a></li>
-      <li><a href="#structure">Project structure</a></li>
-      <li><a href="#troubleshooting">Troubleshooting</a></li>
-      <li><a href="#license">License</a></li>
-    </ul>
+      <div class="group">CLI Reference</div>
+      <ul>
+        <li><a href="#cmd-walter">bb walter</a></li>
+        <li><a href="#cmd-tofu">bb tofu</a></li>
+        <li><a href="#cmd-ansible">bb ansible</a></li>
+        <li><a href="#cmd-ansible-local">bb ansible-local</a></li>
+        <li><a href="#cmd-misc">Tidy &amp; test</a></li>
+      </ul>
+
+      <div class="group">Architecture</div>
+      <ul>
+        <li><a href="#workflow">Create workflow</a></li>
+        <li><a href="#arch-namespaces">Namespaces</a></li>
+        <li><a href="#arch-bigconfig">big-config engine</a></li>
+        <li><a href="#arch-rendering">Template rendering</a></li>
+        <li><a href="#arch-profiles">Profiles &amp; .dist/</a></li>
+      </ul>
+
+      <div class="group">Provisioned</div>
+      <ul>
+        <li><a href="#inst-system">System (root)</a></li>
+        <li><a href="#inst-user">User (ubuntu)</a></li>
+        <li><a href="#inst-packages">Devbox packages</a></li>
+        <li><a href="#inst-asdf">asdf languages</a></li>
+        <li><a href="#inst-repos">Cloned repos</a></li>
+      </ul>
+
+      <div class="group">Operational</div>
+      <ul>
+        <li><a href="#customization">Customization</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+      </ul>
+
+      <div class="group">Development</div>
+      <ul>
+        <li><a href="#repl">REPL workflow</a></li>
+        <li><a href="#structure">Project structure</a></li>
+      </ul>
+
+      <div class="group">Reference</div>
+      <ul>
+        <li><a href="#license">License</a></li>
+      </ul>
+    </nav>
   </aside>
 
-  <main>
+  <main id="top">
 
-    <div class="hero">
-      <span class="tag">Infrastructure automation</span>
-      <h1>Walter</h1>
-      <p>Walter provisions a cloud VM (Hetzner Cloud or Oracle OCI), then configures it into a fully-loaded, personalized development environment — Doom Emacs, Devbox, asdf, Tailscale, Docker, Caddy, Redis, and a constellation of dotfiles — with a single command.</p>
-    </div>
+  <h1>Walter</h1>
+  <p class="lead">Walter provisions a cloud VM (Hetzner Cloud or Oracle OCI), then configures it into a fully-loaded, personalized development environment — Doom Emacs, Devbox, asdf, Tailscale, Docker, Caddy, Redis, and a constellation of dotfiles — with a single command.</p>
+  <div class="header-meta">
+    <span class="pill">Clojure / Babashka</span>
+    <span class="pill">OpenTofu</span>
+    <span class="pill">Ansible</span>
+    <span class="pill">Ubuntu 24.04 LTS</span>
+    <span class="pill">Hetzner · OCI</span>
+    <span class="pill">S3 backend</span>
+    <span class="pill">MIT</span>
+  </div>
 
-    <div class="chips">
-      <span class="chip">Engine: <b>Clojure / Babashka</b></span>
-      <span class="chip">IaC: <b>OpenTofu</b></span>
-      <span class="chip">Config mgmt: <b>Ansible</b></span>
-      <span class="chip">Target OS: <b>Ubuntu 24.04 LTS</b></span>
-      <span class="chip">Hyperscalers: <b>Hetzner · OCI</b></span>
-      <span class="chip">State backend: <b>S3</b></span>
-      <span class="chip">License: <b>MIT</b></span>
-    </div>
-
-    <!-- ─────────────── OVERVIEW ─────────────── -->
-    <h2 id="overview">Overview <a class="anchor" href="#overview">#</a></h2>
-
+  <!-- ============================================================ -->
+  <section id="overview">
+    <h2>Overview</h2>
     <p>Walter is a thin orchestration layer over <a href="https://opentofu.org/">OpenTofu</a> and <a href="https://www.ansible.com/">Ansible</a> written in Clojure. It exists for one purpose: <em>turn the empty cloud account you just opened into a productive Linux workstation in minutes</em>. The workflow is:</p>
 
     <ol>
@@ -424,36 +499,40 @@
         <p>Idempotent, agentless, ubiquitous on Ubuntu. Roles are plain YAML; no compiler dance.</p>
       </div>
     </div>
+  </section>
 
-    <!-- ─────────────── QUICKSTART ─────────────── -->
-    <h2 id="quickstart">Quick start <a class="anchor" href="#quickstart">#</a></h2>
+  <!-- ============================================================ -->
+  <section id="quickstart">
+    <h2>Quick start</h2>
 
-    <p>Assuming Babashka, OpenTofu and Ansible are already on your <span class="strong">PATH</span> (see <a href="#prereqs">Prerequisites</a>):</p>
+    <p>Assuming Babashka, OpenTofu and Ansible are already on your PATH (see <a href="#prereqs">Prerequisites</a>):</p>
 
-<pre><code><span class="c-com"># 1. Clone and enter the repo</span>
+<pre><code><span class="com"># 1. Clone and enter the repo</span>
 git clone https://github.com/amiorin/walter
 cd walter
 
-<span class="c-com"># 2. Drop your secrets into .envrc.private (see .envrc.private.example)</span>
+<span class="com"># 2. Drop your secrets into .envrc.private (see .envrc.private.example)</span>
 cp .envrc.private.example .envrc.private
 $EDITOR .envrc.private
 
-<span class="c-com"># 3. Authenticate against the hyperscaler</span>
-<span class="c-com">#    OCI: oci setup config        (writes ~/.oci/config, profile DEFAULT)</span>
-<span class="c-com">#    Hetzner: export HCLOUD_TOKEN=... (or set BC_PAR_HCLOUD_TOKEN)</span>
+<span class="com"># 3. Authenticate against the hyperscaler</span>
+<span class="com">#    OCI: oci setup config        (writes ~/.oci/config, profile DEFAULT)</span>
+<span class="com">#    Hetzner: export HCLOUD_TOKEN=... (or set BC_PAR_HCLOUD_TOKEN)</span>
 
-<span class="c-com"># 4. Provision and configure end-to-end</span>
+<span class="com"># 4. Provision and configure end-to-end</span>
 bb walter create</code></pre>
 
     <p>That last command takes about 10–20 minutes on a fresh box. When it returns, the VM is reachable over Tailscale and Doom Emacs is compiled.</p>
 
-    <div class="callout">
-      <span class="label info">NOTE</span>
+    <div class="note">
+      <span class="label">Note</span>
       Walter is configured for the author&rsquo;s personal setup out of the box (his SSH key, his repos, his OCI tenancy). Forking and editing <code>src/clj/io/github/amiorin/walter/ansible.clj</code> and <code>bb.edn</code> is the expected path before first run — see <a href="#customization">Customization</a>.
     </div>
+  </section>
 
-    <!-- ─────────────── PREREQS ─────────────── -->
-    <h2 id="prereqs">Prerequisites <a class="anchor" href="#prereqs">#</a></h2>
+  <!-- ============================================================ -->
+  <section id="prereqs">
+    <h2>Prerequisites</h2>
 
     <table>
       <thead><tr><th>Tool</th><th>Why</th><th>Install hint</th></tr></thead>
@@ -462,64 +541,67 @@ bb walter create</code></pre>
         <tr><td><a href="https://clojure.org/">Clojure CLI</a></td><td>Runs the test alias and REPL</td><td><code>brew install clojure/tools/clojure</code></td></tr>
         <tr><td><a href="https://opentofu.org/">OpenTofu</a> (<code>tofu</code>)</td><td>Provisions the VM</td><td><code>brew install opentofu</code></td></tr>
         <tr><td><a href="https://www.ansible.com/">Ansible</a></td><td>Configures the VM</td><td><code>brew install ansible</code></td></tr>
-        <tr><td>oci-cli <span class="muted">(if using OCI)</span></td><td>Reads <code>~/.oci/config</code> for credentials</td><td><code>brew install oci-cli &amp;&amp; oci setup config</code></td></tr>
-        <tr><td>AWS CLI <span class="muted">(for S3 backend)</span></td><td>Auth&rsquo;d for OpenTofu state in S3</td><td><code>aws configure</code></td></tr>
-        <tr><td><a href="https://devenv.sh/">devenv</a> <span class="muted">(optional)</span></td><td>Reproducible local toolchain via Nix</td><td>See <code>devenv.nix</code> in the repo</td></tr>
-        <tr><td><a href="https://github.com/jetpack-io/devbox">Devbox</a> <span class="muted">(target)</span></td><td>Installed automatically on the VM; not needed locally</td><td>—</td></tr>
+        <tr><td>oci-cli <span class="com">(if using OCI)</span></td><td>Reads <code>~/.oci/config</code> for credentials</td><td><code>brew install oci-cli &amp;&amp; oci setup config</code></td></tr>
+        <tr><td>AWS CLI <span class="com">(for S3 backend)</span></td><td>Auth&rsquo;d for OpenTofu state in S3</td><td><code>aws configure</code></td></tr>
+        <tr><td><a href="https://devenv.sh/">devenv</a> <span class="com">(optional)</span></td><td>Reproducible local toolchain via Nix</td><td>See <code>devenv.nix</code> in the repo</td></tr>
+        <tr><td><a href="https://github.com/jetpack-io/devbox">Devbox</a> <span class="com">(target)</span></td><td>Installed automatically on the VM; not needed locally</td><td>—</td></tr>
       </tbody>
     </table>
 
     <p>If you have <a href="https://direnv.net/">direnv</a> and <code>devenv</code>, the repo&rsquo;s <code>.envrc</code> activates the full toolchain on <code>cd</code>. The configured languages and packages are:</p>
 
-<pre><code><span class="c-com">;; devenv.nix</span>
+<pre><code><span class="com">;; devenv.nix</span>
 languages.clojure.enable = true;
 languages.ansible.enable = true;
 languages.opentofu.enable = true;
 packages = [ pkgs.jet pkgs.hcl2json pkgs.awscli2 pkgs.oci-cli ];</code></pre>
+  </section>
 
-    <!-- ─────────────── CONFIG ─────────────── -->
-    <h2 id="configuration">Configuration <a class="anchor" href="#configuration">#</a></h2>
+  <!-- ============================================================ -->
+  <section id="config-env">
+    <h2>Environment variables</h2>
 
     <p>Walter reads its configuration from three sources, in order of override:</p>
     <ol>
-      <li><b>Static defaults</b> — <code>src/clj/io/github/amiorin/walter/options.clj</code></li>
-      <li><b>Per-invocation overrides</b> — <code>bb.edn</code> &nbsp;<code>:init</code>&nbsp;block (binds <code>bb</code>)</li>
-      <li><b>Environment variables</b> — read by <code>big-config</code> as <code>BC_PAR_*</code></li>
+      <li><strong>Static defaults</strong> — <code>src/clj/io/github/amiorin/walter/options.clj</code></li>
+      <li><strong>Per-invocation overrides</strong> — <code>bb.edn</code> <code>:init</code> block (binds <code>bb</code>)</li>
+      <li><strong>Environment variables</strong> — read by <code>big-config</code> as <code>BC_PAR_*</code></li>
     </ol>
-
-    <h3 id="config-env">Environment variables <a class="anchor" href="#config-env">#</a></h3>
 
     <p>Secrets and per-machine values live in <code>.envrc.private</code> (untracked). The example file lists three:</p>
 
-<pre><code><span class="c-com"># .envrc.private.example</span>
-export BC_PAR_HCLOUD_TOKEN=...                                      <span class="c-com"># Hetzner Cloud API token</span>
-export BC_PAR_DO_TOKEN=...                                          <span class="c-com"># DigitalOcean (reserved; not used by current providers)</span>
-export ATUIN_LOGIN=<span class="c-str">"atuin login -u amiorin -p ... -k '...'"</span>   <span class="c-com"># injected verbatim into the Ansible run</span></code></pre>
+<pre><code><span class="com"># .envrc.private.example</span>
+<span class="kw">export</span> BC_PAR_HCLOUD_TOKEN=...                                      <span class="com"># Hetzner Cloud API token</span>
+<span class="kw">export</span> BC_PAR_DO_TOKEN=...                                          <span class="com"># DigitalOcean (reserved; not used by current providers)</span>
+<span class="kw">export</span> ATUIN_LOGIN=<span class="str">"atuin login -u amiorin -p ... -k '...'"</span>   <span class="com"># injected verbatim into the Ansible run</span></code></pre>
 
     <p>The <code>BC_PAR_</code> prefix is consumed by <code>big-config</code> and exposed in Clojure as the <code>:io.github.amiorin.walter/&hellip;</code> params map. The <code>ATUIN_LOGIN</code> variable is looked up at Ansible run-time inside the user role to seed Atuin shell history sync.</p>
+  </section>
 
-    <h3 id="config-oci">OCI parameters <a class="anchor" href="#config-oci">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="config-oci">
+    <h2>OCI parameters</h2>
 
     <p>The live OCI configuration is the <code>:init</code> block in <code>bb.edn</code> — it overrides the defaults in <code>options.clj</code>:</p>
 
-<pre><code><span class="c-com">;; bb.edn :init  →  bb is the canonical options map</span>
-{:big-config.render/profile <span class="c-str">"walter"</span>
- :big-config.workflow/params {:provider-compute <span class="c-str">"oci"</span>
-                              :oci-config-file-profile <span class="c-str">"DEFAULT"</span>
-                              :oci-subnet-id <span class="c-str">"ocid1.subnet.oc1.eu-frankfurt-1.…"</span>
-                              :oci-compartment-id <span class="c-str">"ocid1.tenancy.oc1.…"</span>
-                              :oci-availability-domain <span class="c-str">"xTQn:EU-FRANKFURT-1-AD-1"</span>
-                              :oci-display-name <span class="c-str">"walter"</span>
-                              :oci-shape <span class="c-str">"VM.Standard.A1.Flex"</span>
-                              :oci-ocpus 3
-                              :oci-memory-in-gbs 18
-                              :oci-boot-volume-size-in-gbs 150
-                              :oci-boot-volume-vpus-per-gb 30
-                              :oci-ssh-authorized-keys <span class="c-str">"~/.ssh/id_ed25519.pub"</span>
-                              :provider-backend <span class="c-str">"s3"</span>
-                              :s3-bucket <span class="c-str">"tf-state-251213589273-eu-west-1"</span>
-                              :s3-region <span class="c-str">"eu-west-1"</span>
-                              :package <span class="c-str">"walter"</span>}}</code></pre>
+<pre><code><span class="com">;; bb.edn :init  →  bb is the canonical options map</span>
+{:big-config.render/profile <span class="str">"walter"</span>
+ :big-config.workflow/params {:provider-compute <span class="str">"oci"</span>
+                              :oci-config-file-profile <span class="str">"DEFAULT"</span>
+                              :oci-subnet-id <span class="str">"ocid1.subnet.oc1.eu-frankfurt-1.…"</span>
+                              :oci-compartment-id <span class="str">"ocid1.tenancy.oc1.…"</span>
+                              :oci-availability-domain <span class="str">"xTQn:EU-FRANKFURT-1-AD-1"</span>
+                              :oci-display-name <span class="str">"walter"</span>
+                              :oci-shape <span class="str">"VM.Standard.A1.Flex"</span>
+                              :oci-ocpus <span class="num">3</span>
+                              :oci-memory-in-gbs <span class="num">18</span>
+                              :oci-boot-volume-size-in-gbs <span class="num">150</span>
+                              :oci-boot-volume-vpus-per-gb <span class="num">30</span>
+                              :oci-ssh-authorized-keys <span class="str">"~/.ssh/id_ed25519.pub"</span>
+                              :provider-backend <span class="str">"s3"</span>
+                              :s3-bucket <span class="str">"tf-state-251213589273-eu-west-1"</span>
+                              :s3-region <span class="str">"eu-west-1"</span>
+                              :package <span class="str">"walter"</span>}}</code></pre>
 
     <table>
       <thead><tr><th>Key</th><th>Meaning</th><th>Default</th></tr></thead>
@@ -534,105 +616,111 @@ export ATUIN_LOGIN=<span class="c-str">"atuin login -u amiorin -p ... -k '...'"<
       </tbody>
     </table>
 
-    <div class="callout warn">
-      <span class="label">WARN</span>
+    <div class="note warn">
+      <span class="label">Warn</span>
       The default shape <code>VM.Standard.A1.Flex</code> is ARM64. Every binary downloaded by the Ansible roles (asdf plugins, Devbox packages, Doom Emacs deps) resolves to ARM builds. If you change the shape to an x86 family, expect things like <code>asdf</code> tarballs to need a different arch suffix.
     </div>
+  </section>
 
-    <h3 id="config-hcloud">Hetzner parameters <a class="anchor" href="#config-hcloud">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="config-hcloud">
+    <h2>Hetzner parameters</h2>
 
     <p>The Hetzner template is simpler — it expects only <code>BC_PAR_HCLOUD_TOKEN</code> and the SSH key alias already registered in your Hetzner project:</p>
 
-<pre><code><span class="c-com"># src/resources/io/github/amiorin/walter/tools/tofu/hcloud/main.tf</span>
-resource <span class="c-str">"hcloud_server"</span> <span class="c-str">"node1"</span> {
-  name        = <span class="c-str">"node1-{{ profile }}"</span>
-  image       = <span class="c-str">"ubuntu-24.04"</span>
-  server_type = <span class="c-str">"cx23"</span>
-  location    = <span class="c-str">"hel1"</span>
-  ssh_keys    = [<span class="c-str">"32617+amiorin@users.noreply.github.com"</span>]
+<pre><code><span class="com"># src/resources/io/github/amiorin/walter/tools/tofu/hcloud/main.tf</span>
+resource <span class="str">"hcloud_server"</span> <span class="str">"node1"</span> {
+  name        = <span class="str">"node1-{{ profile }}"</span>
+  image       = <span class="str">"ubuntu-24.04"</span>
+  server_type = <span class="str">"cx23"</span>
+  location    = <span class="str">"hel1"</span>
+  ssh_keys    = [<span class="str">"32617+amiorin@users.noreply.github.com"</span>]
   &hellip;
 }</code></pre>
 
     <p>To switch hyperscaler, change <code>:provider-compute</code> in the <code>bb.edn</code> <code>:init</code> block from <code>"oci"</code> to <code>"hcloud"</code>. The <code>tofu</code> template tree is selected by that key.</p>
+  </section>
 
-    <!-- ─────────────── COMMANDS ─────────────── -->
-    <h2 id="commands">Commands <a class="anchor" href="#commands">#</a></h2>
-
-    <p>All commands are Babashka tasks defined in <code>bb.edn</code>. Each one has a <em>starred</em> Clojure variant (e.g. <code>walter*</code>) that parses CLI args and a non-starred core variant invoked from the REPL.</p>
-
-    <h3 id="cmd-walter">bb walter <a class="anchor" href="#cmd-walter">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="cmd-walter">
+    <h2><code>bb walter</code></h2>
 
     <p>The top-level orchestration. Internally a workflow with two steps wired up: <code>::start</code> &rarr; <code>::end</code>, where the inner pipeline runs OpenTofu, then Ansible, then ansible-local.</p>
 
-<pre><code>bb walter create        <span class="c-com"># tofu render+init+apply → ansible render+playbook → ansible-local render+playbook</span>
-bb walter delete        <span class="c-com"># tofu render+init+destroy (skips ansible)</span></code></pre>
+<pre><code>bb walter create        <span class="com"># tofu render+init+apply → ansible render+playbook → ansible-local render+playbook</span>
+bb walter delete        <span class="com"># tofu render+init+destroy (skips ansible)</span></code></pre>
 
-    <h3 id="cmd-tofu">bb tofu <a class="anchor" href="#cmd-tofu">#</a></h3>
+    <p>All commands are Babashka tasks defined in <code>bb.edn</code>. Each one has a <em>starred</em> Clojure variant (e.g. <code>walter*</code>) that parses CLI args and a non-starred core variant invoked from the REPL.</p>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="cmd-tofu">
+    <h2><code>bb tofu</code></h2>
 
     <p>Direct access to the OpenTofu stage. Tasks are colon-prefixed; pass them as args:</p>
 
-<pre><code>bb tofu render                        <span class="c-com"># render templates to .dist/walter-&lt;hash&gt;/</span>
-bb tofu tofu:init                     <span class="c-com"># initialize backend &amp; providers</span>
-bb tofu lock                          <span class="c-com"># tofu providers lock for cross-platform</span>
-bb tofu tofu:plan                     <span class="c-com"># dry-run changes</span>
-bb tofu tofu:apply                    <span class="c-com"># prompt-confirmed apply</span>
-bb tofu tofu:apply:-auto-approve      <span class="c-com"># used by 'bb walter create'</span>
-bb tofu tofu:destroy                  <span class="c-com"># teardown</span>
-bb tofu tofu:destroy:-auto-approve    <span class="c-com"># used by 'bb walter delete'</span></code></pre>
+<pre><code>bb tofu render                        <span class="com"># render templates to .dist/walter-&lt;hash&gt;/</span>
+bb tofu tofu:init                     <span class="com"># initialize backend &amp; providers</span>
+bb tofu lock                          <span class="com"># tofu providers lock for cross-platform</span>
+bb tofu tofu:plan                     <span class="com"># dry-run changes</span>
+bb tofu tofu:apply                    <span class="com"># prompt-confirmed apply</span>
+bb tofu tofu:apply:-auto-approve      <span class="com"># used by 'bb walter create'</span>
+bb tofu tofu:destroy                  <span class="com"># teardown</span>
+bb tofu tofu:destroy:-auto-approve    <span class="com"># used by 'bb walter delete'</span></code></pre>
 
     <p>You can chain tasks in one invocation; they share a single rendered tree:</p>
 
 <pre><code>bb tofu render tofu:init tofu:plan</code></pre>
+  </section>
 
-    <h3 id="cmd-ansible">bb ansible <a class="anchor" href="#cmd-ansible">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="cmd-ansible">
+    <h2><code>bb ansible</code></h2>
 
     <p>Ansible against the <em>remote</em> host. Reads <code>params</code> output by the OpenTofu stage (public IP, sudoer, uid) and templates them into the inventory.</p>
 
-<pre><code>bb ansible render                          <span class="c-com"># render playbooks + roles + inventory.json to .dist/default-&lt;hash&gt;/</span>
-bb ansible ansible-playbook:main.yml       <span class="c-com"># run main.yml against admin+users hosts</span></code></pre>
+<pre><code>bb ansible render                          <span class="com"># render playbooks + roles + inventory.json to .dist/default-&lt;hash&gt;/</span>
+bb ansible ansible-playbook:main.yml       <span class="com"># run main.yml against admin+users hosts</span></code></pre>
 
     <p>The rendered tree contains <code>main.yml</code>, <code>ansible.cfg</code>, <code>inventory.json</code>, <code>default.config.yml</code>, and the two roles (<code>root</code>, <code>users</code>).</p>
+  </section>
 
-    <h3 id="cmd-ansible-local">bb ansible-local <a class="anchor" href="#cmd-ansible-local">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="cmd-ansible-local">
+    <h2><code>bb ansible-local</code></h2>
 
     <p>Same set of playbooks executed on <em>your</em> machine — used today to update your local <code>~/.ssh/config</code> with a Host entry pointing at the new VM&rsquo;s Tailscale hostname:</p>
 
 <pre><code>bb ansible-local ansible-playbook:main.yml</code></pre>
 
     <p>After this runs you can <code>ssh walter</code> (or whatever <code>:oci-display-name</code> resolves to) and land on the box over Tailscale.</p>
+  </section>
 
-    <h3 id="cmd-misc">Tidy &amp; test <a class="anchor" href="#cmd-misc">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="cmd-misc">
+    <h2>Tidy &amp; test</h2>
 
-<pre><code>bb tidy                  <span class="c-com"># clojure-lsp clean-ns + format</span>
-clojure -X:test          <span class="c-com"># cognitect test-runner (test/ dir)</span>
-clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the classpath</span></code></pre>
+<pre><code>bb tidy                  <span class="com"># clojure-lsp clean-ns + format</span>
+clojure -X:test          <span class="com"># cognitect test-runner (test/ dir)</span>
+clojure -A:dev           <span class="com"># REPL with env/dev/clj on the classpath</span></code></pre>
+  </section>
 
-    <!-- ─────────────── WORKFLOW ─────────────── -->
-    <h2 id="workflow">The <code>create</code> workflow <a class="anchor" href="#workflow">#</a></h2>
+  <!-- ============================================================ -->
+  <section id="workflow">
+    <h2>The <code>create</code> workflow</h2>
 
     <p><code>bb walter create</code> resolves to <code>io.github.amiorin.walter.package/walter*</code>, which builds a top-level <code>core/-&gt;workflow</code> with the inner <code>create</code> pipeline as the body of <code>::start</code>:</p>
 
-    <div class="diagram">
-<span class="dim">bb walter create</span>
-   <span class="arrow">│</span>
-   <span class="arrow">▼</span>
-<span class="box">┌─ walter (top-level workflow) ─────────────────────────────────────┐</span>
-<span class="box">│</span>  ::start  <span class="arrow">→</span>  run-steps step-fns                                  <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">│</span>                                                       <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">├─</span> <span class="label">::tools-once/tofu</span>                                      <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">│</span>     <span class="dim">args: "render tofu:init tofu:apply:-auto-approve"</span>   <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">│</span>     <span class="dim">opts-fn: params/opts-fn</span>                              <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">│</span>                                                       <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">├─</span> <span class="label">::tools-walter/ansible</span>                                 <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">│</span>     <span class="dim">args: "render ansible-playbook:main.yml"</span>            <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">│</span>     <span class="dim">opts-fn: params/opts-fn</span>                              <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">│</span>                                                       <span class="box">│</span>
-<span class="box">│</span>            <span class="arrow">└─</span> <span class="label">::tools-once/ansible-local</span>                             <span class="box">│</span>
-<span class="box">│</span>                  <span class="dim">args: "render ansible-playbook:main.yml"</span>            <span class="box">│</span>
-<span class="box">│</span>                  <span class="dim">opts-fn: params/opts-fn</span>                              <span class="box">│</span>
-<span class="box">│</span>  ::end                                                            <span class="box">│</span>
-<span class="box">└───────────────────────────────────────────────────────────────────┘</span>
-</div>
+    <div class="pipeline">
+      <div class="stage"><span class="n">1</span><div class="label">tofu</div><div class="sub">provision VM</div></div>
+      <div class="stage"><span class="n">2</span><div class="label">ansible</div><div class="sub">remote configure</div></div>
+      <div class="stage"><span class="n">3</span><div class="label">ansible-local</div><div class="sub">~/.ssh/config</div></div>
+    </div>
+
+<pre><code><span class="com">;; package.clj — the inner pipeline of ::start</span>
+[::tools-once/tofu          [<span class="str">"render tofu:init tofu:apply:-auto-approve"</span> params/opts-fn]]
+[::tools-walter/ansible     [<span class="str">"render ansible-playbook:main.yml"</span>      params/opts-fn]]
+[::tools-once/ansible-local [<span class="str">"render ansible-playbook:main.yml"</span>      params/opts-fn]]</code></pre>
 
     <p>Each pipeline step is a keyword + <code>[args opts-fn]</code> vector. <code>opts-fn</code> is the composed function <code>tofu-params ∘ read-bc-pars</code>, which merges:</p>
     <ul>
@@ -642,11 +730,11 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
     </ul>
 
     <p>This is what lets the Ansible step <em>discover</em> the new VM&rsquo;s IP without you typing it.</p>
+  </section>
 
-    <!-- ─────────────── ARCHITECTURE ─────────────── -->
-    <h2 id="architecture">Architecture <a class="anchor" href="#architecture">#</a></h2>
-
-    <h3 id="arch-namespaces">Namespaces <a class="anchor" href="#arch-namespaces">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="arch-namespaces">
+    <h2>Namespaces</h2>
 
     <table>
       <thead><tr><th>Namespace</th><th>Responsibility</th></tr></thead>
@@ -659,14 +747,15 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
       </tbody>
     </table>
 
-    <p>The naming convention is consistent throughout the repo&rsquo;s sibling projects:</p>
-
-    <div class="callout tip">
-      <span class="label">CONVENTION</span>
+    <div class="note ok">
+      <span class="label">Convention</span>
       A function ending in <code>*</code> (e.g. <code>walter*</code>, <code>ansible*</code>) is the Babashka entry point: it parses <code>*command-line-args*</code>, sets <code>::bc/env :shell</code>, and forwards to the non-starred core variant. The bare version is what you call from the REPL, supplying opts directly.
     </div>
+  </section>
 
-    <h3 id="arch-bigconfig">big-config workflow engine <a class="anchor" href="#arch-bigconfig">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="arch-bigconfig">
+    <h2>big-config workflow engine</h2>
 
     <p>Walter doesn&rsquo;t reinvent orchestration; it leans on the sibling library <a href="https://github.com/amiorin/big-config">big-config</a>. The engine provides:</p>
     <ul>
@@ -679,26 +768,29 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
     </ul>
 
     <p>The companion library <a href="https://github.com/amiorin/once">once</a> ships the reusable <code>tofu*</code> and <code>ansible-local*</code> tasks. Walter only owns its own <code>ansible*</code> task because the remote Ansible step needs Walter-specific transforms (packages.yml, repos.yml, ssh-config.yml from <code>data-fn</code>).</p>
+  </section>
 
-    <h3 id="arch-rendering">Template rendering <a class="anchor" href="#arch-rendering">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="arch-rendering">
+    <h2>Template rendering</h2>
 
     <p>Templates live under <code>src/resources/io/github/amiorin/walter/tools/&lt;tool&gt;</code>. Rendering happens via <code>big-config.render</code>:</p>
 
-<pre><code><span class="c-com">;; from walter.tools/ansible</span>
+<pre><code><span class="com">;; from walter.tools/ansible</span>
 (workflow/prepare
   {::workflow/name ::ansible
    ::render/templates [{:template (keyword-&gt;path ::ansible)
                         :overwrite true
                         :data-fn a/data-fn
-                        :transform [[<span class="c-str">"."</span> :raw]
-                                    [a/render <span class="c-str">"roles/users/tasks"</span>
-                                     {:packages   <span class="c-str">"packages.yml"</span>
-                                      :repos      <span class="c-str">"repos.yml"</span>
-                                      :ssh-config <span class="c-str">"ssh-config.yml"</span>}
+                        :transform [[<span class="str">"."</span> :raw]
+                                    [a/render <span class="str">"roles/users/tasks"</span>
+                                     {:packages   <span class="str">"packages.yml"</span>
+                                      :repos      <span class="str">"repos.yml"</span>
+                                      :ssh-config <span class="str">"ssh-config.yml"</span>}
                                      :raw]
                                     [a/render
-                                     {:inventory <span class="c-str">"inventory.json"</span>
-                                      :config    <span class="c-str">"default.config.yml"</span>}
+                                     {:inventory <span class="str">"inventory.json"</span>
+                                      :config    <span class="str">"default.config.yml"</span>}
                                      :raw]]}]})</code></pre>
 
     <p>Three transforms run against the source tree:</p>
@@ -709,8 +801,11 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
     </ol>
 
     <p>For the OpenTofu side, the <code>once</code> library does the equivalent, picking the subtree <code>tofu/&lt;provider-compute&gt;/</code> based on the configured key.</p>
+  </section>
 
-    <h3 id="arch-profiles">Profiles &amp; <code>.dist/</code> <a class="anchor" href="#arch-profiles">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="arch-profiles">
+    <h2>Profiles &amp; <code>.dist/</code></h2>
 
     <p>The rendered output goes to <code>.dist/&lt;profile&gt;-&lt;hash&gt;/&hellip;</code>. Two profiles are in use:</p>
     <ul>
@@ -720,17 +815,17 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
 
     <p>The hash suffix is content-addressable: identical inputs produce the same directory name, so re-renders are stable and OpenTofu&rsquo;s working dir doesn&rsquo;t move between runs unless inputs change.</p>
 
-    <div class="callout">
-      <span class="label info">NOTE</span>
+    <div class="note">
+      <span class="label">Note</span>
       <code>.dist/</code> is in <code>.gitignore</code>. Treat it as build output — never hand-edit files there; your changes will be clobbered on the next render.
     </div>
+  </section>
 
-    <!-- ─────────────── WHAT INSTALLED ─────────────── -->
-    <h2 id="what-installed">What gets installed on the VM <a class="anchor" href="#what-installed">#</a></h2>
+  <!-- ============================================================ -->
+  <section id="inst-system">
+    <h2>System role (<code>root</code>, become: true)</h2>
 
-    <p>The Ansible playbook (<code>main.yml</code>) runs two roles:</p>
-
-    <h3 id="inst-system">System role (<code>root</code>, become: true) <a class="anchor" href="#inst-system">#</a></h3>
+    <p>The Ansible playbook (<code>main.yml</code>) runs two roles. The system role does the privileged work:</p>
 
     <ul>
       <li>Add a sudoers file for each managed user (<code>NOPASSWD:ALL</code>).</li>
@@ -748,12 +843,15 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
       <li>Create the managed user (<code>ubuntu</code> by default) with UID, home dir, and the <code>docker</code> group.</li>
       <li>Drop the author&rsquo;s SSH key into <code>~ubuntu/.ssh/authorized_keys</code>.</li>
       <li>Install <a href="https://asdf-vm.com/">asdf</a> v0.18.0 binary to <code>/usr/local/bin</code>.</li>
-      <li>Add Tailscale apt repo and install <b>tailscale</b>, <b>fish</b>, <b>build-essential</b>.</li>
-      <li>Install <b>Caddy</b> via its stable Debian repo.</li>
-      <li>Install <b>Redis</b> via the official Redis repo.</li>
+      <li>Add Tailscale apt repo and install <strong>tailscale</strong>, <strong>fish</strong>, <strong>build-essential</strong>.</li>
+      <li>Install <strong>Caddy</strong> via its stable Debian repo.</li>
+      <li>Install <strong>Redis</strong> via the official Redis repo.</li>
     </ul>
+  </section>
 
-    <h3 id="inst-user">User role (<code>ubuntu</code>) <a class="anchor" href="#inst-user">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="inst-user">
+    <h2>User role (<code>ubuntu</code>)</h2>
 
     <ul>
       <li>Install Ghostty terminfo (<code>tic -x</code>).</li>
@@ -767,8 +865,11 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
       <li>Clone <a href="https://github.com/doomemacs/doomemacs">Doom Emacs</a> pinned at commit <code>dd72eac…</code>, run <code>doom sync</code>, pre-compile <code>vterm</code>, and install all the LSP servers Doom expects (Dockerfile, basedpyright, typescript, yaml, astro, mdx).</li>
       <li>Generate <code>~/.ssh/config</code> blocks pointing at the host&rsquo;s <code>*.afrino-bushi.ts.net</code> Tailscale hostname.</li>
     </ul>
+  </section>
 
-    <h3 id="inst-packages">Devbox packages <a class="anchor" href="#inst-packages">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="inst-packages">
+    <h2>Devbox packages</h2>
 
     <p>Each is added with <code>devbox global add --disable-plugin &lt;name&gt;</code>:</p>
 
@@ -796,10 +897,13 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
       <li><code>clojure-lsp</code></li>
       <li><code>btop</code></li>
       <li><code>clj-kondo</code></li>
-      <li><code>ripgrep</code> <span class="muted">(rg)</span></li>
+      <li><code>ripgrep</code> <span class="com">(rg)</span></li>
     </ul>
+  </section>
 
-    <h3 id="inst-asdf">asdf languages <a class="anchor" href="#inst-asdf">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="inst-asdf">
+    <h2>asdf languages</h2>
 
     <p>Each plugin is added and the latest version is installed and set as global:</p>
 
@@ -816,39 +920,49 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
         <tr><td>opentofu</td><td>virtualroot/asdf-opentofu</td><td>latest</td></tr>
       </tbody>
     </table>
+  </section>
 
-    <h3 id="inst-repos">Cloned repos <a class="anchor" href="#inst-repos">#</a></h3>
+  <!-- ============================================================ -->
+  <section id="inst-repos">
+    <h2>Cloned repos</h2>
 
     <p>All are cloned via SSH (<code>git@github.com:&hellip;</code>) into <code>~/code/personal/&lt;repo&gt;/main</code>. Worktrees are created as sibling directories.</p>
 
-    <h4>Org <code>amiorin</code></h4>
-    <ul>
-      <li><code>dotfiles-v3</code></li>
-      <li><code>albertomiorin.com</code> &nbsp;<span class="muted">(worktree: <code>albertomiorin</code>)</span></li>
-      <li><code>big-container</code></li>
-      <li><code>alice</code></li>
-    </ul>
-
-    <h4>Org <code>bigconfig-ai</code></h4>
-    <ul>
-      <li><code>basecamp-once</code></li>
-      <li><code>big-config</code></li>
-      <li><code>once</code></li>
-      <li><code>once-ai</code></li>
-      <li><code>once-bigconfig</code></li>
-      <li><code>once-bigconfig-marketplace</code></li>
-      <li><code>once-caddy-redirect</code></li>
-      <li><code>once-forms</code></li>
-      <li><code>walter</code></li>
-    </ul>
-
-    <div class="callout warn">
-      <span class="label">REQUIRES SSH AGENT</span>
-      The clone step runs over SSH and needs your local key forwarded into the VM. Confirm <code>ssh-add -l</code> on your laptop before <code>bb walter create</code>, and that <code>ForwardAgent yes</code> is honoured for the OpenTofu provisioner — see <code>ansible.cfg</code> and <code>ssh-agent.sh</code>.
+    <div class="grid">
+      <div class="card">
+        <h4>Org <code>amiorin</code></h4>
+        <ul>
+          <li><code>dotfiles-v3</code></li>
+          <li><code>albertomiorin.com</code> <span class="com">(worktree: <code>albertomiorin</code>)</span></li>
+          <li><code>big-container</code></li>
+          <li><code>alice</code></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Org <code>bigconfig-ai</code></h4>
+        <ul>
+          <li><code>basecamp-once</code></li>
+          <li><code>big-config</code></li>
+          <li><code>once</code></li>
+          <li><code>once-ai</code></li>
+          <li><code>once-bigconfig</code></li>
+          <li><code>once-bigconfig-marketplace</code></li>
+          <li><code>once-caddy-redirect</code></li>
+          <li><code>once-forms</code></li>
+          <li><code>walter</code></li>
+        </ul>
+      </div>
     </div>
 
-    <!-- ─────────────── CUSTOMIZATION ─────────────── -->
-    <h2 id="customization">Customization <a class="anchor" href="#customization">#</a></h2>
+    <div class="note warn">
+      <span class="label">Requires SSH agent</span>
+      The clone step runs over SSH and needs your local key forwarded into the VM. Confirm <code>ssh-add -l</code> on your laptop before <code>bb walter create</code>, and that <code>ForwardAgent yes</code> is honoured for the OpenTofu provisioner — see <code>ansible.cfg</code> and <code>ssh-agent.sh</code>.
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="customization">
+    <h2>Customization</h2>
 
     <p>Most personalisation happens in two files:</p>
 
@@ -866,17 +980,17 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
     <h3>Add a package</h3>
     <p>Append to the package list in <code>data-fn</code>:</p>
 
-<pre><code>packages (-&gt;&gt; [<span class="c-str">"fish"</span> <span class="c-str">"emacs"</span> &hellip;
-               <span class="c-str">"helix"</span>]                  <span class="c-com">; ← new entry, devbox name matches</span>
+<pre><code>packages (-&gt;&gt; [<span class="str">"fish"</span> <span class="str">"emacs"</span> &hellip;
+               <span class="str">"helix"</span>]                  <span class="com">; ← new entry, devbox name matches</span>
               (mapv (fn [x] [x x]))
-              (into [[<span class="c-str">"ripgrep"</span> <span class="c-str">"rg"</span>]]))   <span class="c-com">; pairs are [devbox-name, expected-binary]</span></code></pre>
+              (into [[<span class="str">"ripgrep"</span> <span class="str">"rg"</span>]]))   <span class="com">; pairs are [devbox-name, expected-binary]</span></code></pre>
 
     <p>If the package&rsquo;s binary name differs from the package name (like <code>ripgrep</code> &rarr; <code>rg</code>), add a tuple to the <code>into</code> list so the <code>creates:</code> guard is correct.</p>
 
     <h3>Add a repo</h3>
     <p>Pick the right org (<code>amiorin</code> or <code>bigconfig-ai</code>) and add a tuple:</p>
 
-<pre><code>[<span class="c-str">"my-new-repo"</span> [<span class="c-str">"feature-branch-wt"</span>]]   <span class="c-com">; second element = worktrees vector</span></code></pre>
+<pre><code>[<span class="str">"my-new-repo"</span> [<span class="str">"feature-branch-wt"</span>]]   <span class="com">; second element = worktrees vector</span></code></pre>
 
     <h3>Switch to Hetzner</h3>
     <ol>
@@ -889,9 +1003,9 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
     <h3>Resize the OCI VM</h3>
     <p>OCI Ampere A1 Flex shapes are billed per OCPU+RAM-hour. To go larger:</p>
 
-<pre><code>:oci-ocpus 4
-:oci-memory-in-gbs 24
-:oci-boot-volume-size-in-gbs 200</code></pre>
+<pre><code>:oci-ocpus <span class="num">4</span>
+:oci-memory-in-gbs <span class="num">24</span>
+:oci-boot-volume-size-in-gbs <span class="num">200</span></code></pre>
 
     <p>Then <code>bb tofu render tofu:plan</code> to preview, <code>bb tofu tofu:apply</code> to commit. OpenTofu can resize Flex shapes in place — no destroy needed.</p>
 
@@ -899,90 +1013,25 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
     <p>The pin lives in the user record, not in a YAML var:</p>
 
 <pre><code>users [{:name main-user
-        :uid (or uid <span class="c-str">"1000"</span>)
-        :doomemacs <span class="c-str">"dd72eac1971616a6ebe81067cca33b14c148cbcd"</span>   <span class="c-com">; ← bump this</span>
+        :uid (or uid <span class="str">"1000"</span>)
+        :doomemacs <span class="str">"dd72eac1971616a6ebe81067cca33b14c148cbcd"</span>   <span class="com">; ← bump this</span>
         :remove false}]</code></pre>
 
     <p>The user role&rsquo;s <code>Install doomemacs</code> task reads <code>{{ (users | selectattr(...))first.doomemacs }}</code> with a hard-coded fallback commit.</p>
 
     <h3>Remove a user</h3>
     <p>Add an entry with <code>:remove true</code>. The system role&rsquo;s <code>Force removal</code> task picks them up — home dir is wiped.</p>
+  </section>
 
-    <!-- ─────────────── REPL ─────────────── -->
-    <h2 id="repl">REPL development <a class="anchor" href="#repl">#</a></h2>
-
-    <p>Each source file ends with a <code>comment</code> block containing a <code>(debug tap-values …)</code> form. The pattern is: invoke a workflow in the REPL with <code>::bc/env :repl</code> instead of <code>:shell</code>, inspect the tapped values, then return.</p>
-
-<pre><code>clojure -A:dev</code></pre>
-
-<pre><code><span class="c-com">;; from package.clj</span>
-(comment
-  (debug tap-values
-    (create [] (merge options/walter
-                      {::bc/env :repl
-                       ::tools-once/tofu-opts          (workflow/parse-args <span class="c-str">"render"</span>)
-                       ::tools-walter/ansible-opts     (workflow/parse-args <span class="c-str">"render"</span>)
-                       ::tools-once/ansible-local-opts (workflow/parse-args <span class="c-str">"render"</span>)
-                       ::run/shell-opts {:err *err* :out *out*}})))
-  (-&gt; tap-values))</code></pre>
-
-    <p>This runs <em>just</em> the render phase of every stage and stashes intermediate state in <code>tap-values</code> for inspection. Handy when debugging a template or data-fn change without spinning up a VM.</p>
-
-    <p>To preview <em>just</em> the Ansible data shape:</p>
-
-<pre><code>(require '[io.github.amiorin.walter.ansible :as a])
-(a/data-fn {} {})
-(a/render :inventory (a/data-fn {} {}))</code></pre>
-
-    <!-- ─────────────── STRUCTURE ─────────────── -->
-    <h2 id="structure">Project structure <a class="anchor" href="#structure">#</a></h2>
-
-<pre><code>walter/
-├── bb.edn                              <span class="c-com"># Babashka tasks &amp; :init opts</span>
-├── deps.edn                            <span class="c-com"># Clojure deps (big-config, once, cheshire, clj-yaml…)</span>
-├── devenv.nix                          <span class="c-com"># Local dev environment (Nix)</span>
-├── .envrc / .envrc.private.example     <span class="c-com"># direnv hooks &amp; secrets template</span>
-├── README.md
-├── CLAUDE.md                           <span class="c-com"># Guidance for AI coding assistants</span>
-│
-├── src/
-│   ├── clj/io/github/amiorin/walter/
-│   │   ├── package.clj                 <span class="c-com"># Top-level walter workflow (create / delete)</span>
-│   │   ├── tools.clj                   <span class="c-com"># Ansible workflow definition + render transforms</span>
-│   │   ├── ansible.clj                 <span class="c-com"># data-fn: users / repos / packages / SSH / inventory</span>
-│   │   ├── options.clj                 <span class="c-com"># Static OCI + S3 defaults</span>
-│   │   └── params.clj                  <span class="c-com"># opts-fn composition</span>
-│   │
-│   └── resources/io/github/amiorin/walter/tools/
-│       ├── tofu/
-│       │   ├── oci/main.tf             <span class="c-com"># OCI Ampere VM template</span>
-│       │   └── hcloud/main.tf          <span class="c-com"># Hetzner cx23 template</span>
-│       └── ansible/
-│           ├── ansible.cfg
-│           ├── main.yml                <span class="c-com"># admin → root role,  users → users role</span>
-│           └── roles/
-│               ├── root/
-│               │   ├── tasks/main.yml  <span class="c-com"># sudoers, nix, docker, asdf, apt, caddy, redis</span>
-│               │   ├── tasks/caddy.yml
-│               │   ├── tasks/redis.yml
-│               │   ├── handlers/main.yml
-│               │   └── files/          <span class="c-com"># Z50-devbox.sh, direnv.sh, ssh-agent.sh, zellij.sh</span>
-│               └── users/
-│                   ├── tasks/main.yml  <span class="c-com"># devbox, asdf, repos, dotfiles, atuin, doom</span>
-│                   └── files/xterm-ghostty
-│
-├── env/dev/clj/user.clj                <span class="c-com"># REPL entry namespace</span>
-├── test/                               <span class="c-com"># Cognitect test-runner</span>
-└── .dist/                              <span class="c-com"># (generated) profile-&lt;hash&gt;/ rendered trees</span></code></pre>
-
-    <!-- ─────────────── TROUBLESHOOTING ─────────────── -->
-    <h2 id="troubleshooting">Troubleshooting <a class="anchor" href="#troubleshooting">#</a></h2>
+  <!-- ============================================================ -->
+  <section id="troubleshooting">
+    <h2>Troubleshooting</h2>
 
     <h3>OpenTofu can&rsquo;t authenticate to OCI</h3>
     <p>Check <code>~/.oci/config</code> exists and has a <code>[DEFAULT]</code> profile (matches <code>:oci-config-file-profile</code>). Test with <code>oci os ns get</code>. If you use the OCI CLI Docker image, you&rsquo;ll need to bind-mount the config in.</p>
 
     <h3>S3 backend errors</h3>
-    <p>The configured bucket (<code>tf-state-251213589273-eu-west-1</code>) is the author&rsquo;s. You must change it or you&rsquo;ll see <span class="pill yellow">AccessDenied</span>. Update <code>:s3-bucket</code> + <code>:s3-region</code> in <code>bb.edn</code>, and make sure your local AWS creds can write there.</p>
+    <p>The configured bucket (<code>tf-state-251213589273-eu-west-1</code>) is the author&rsquo;s. You must change it or you&rsquo;ll see <code>AccessDenied</code>. Update <code>:s3-bucket</code> + <code>:s3-region</code> in <code>bb.edn</code>, and make sure your local AWS creds can write there.</p>
 
     <h3>Ansible can&rsquo;t SSH to the new VM</h3>
     <p>The OpenTofu template includes a <code>remote-exec</code> provisioner running <code>ls</code> — its job is to block until the SSH port is up. If that step succeeded but Ansible still times out, suspect: (a) wrong <code>sudoer</code> user (OCI is <code>ubuntu</code>, Hetzner Cloud is <code>root</code>); (b) the public IP changed between tofu and ansible — re-render with <code>bb ansible render</code>.</p>
@@ -993,20 +1042,92 @@ clojure -A:dev           <span class="c-com"># REPL with env/dev/clj on the clas
     <h3>SSH agent forwarding is gone after reconnect</h3>
     <p>The <code>/etc/profile.d/ssh-agent.sh</code> hook stabilises the socket path. As of commit <code>ecd905a</code> the hook also guards against creating a circular symlink (older versions could re-link the file to itself on a second login).</p>
 
-    <h3>“Where did the rendered files go?”</h3>
+    <h3>Where did the rendered files go?</h3>
     <p><code>.dist/&lt;profile&gt;-&lt;hash&gt;/</code>. Profile names are <code>walter</code> (tofu) and <code>default</code> (ansible). The hash is content-stable.</p>
 
     <h3>Tidy / format failing</h3>
     <p><code>bb tidy</code> calls <code>clojure-lsp clean-ns</code> then <code>clojure-lsp format</code>. Both need <code>clojure-lsp</code> on your PATH; install via <code>brew install clojure-lsp/brew/clojure-lsp-native</code>.</p>
+  </section>
 
+  <!-- ============================================================ -->
+  <section id="repl">
+    <h2>REPL workflow</h2>
+
+    <p>Each source file ends with a <code>comment</code> block containing a <code>(debug tap-values …)</code> form. The pattern is: invoke a workflow in the REPL with <code>::bc/env :repl</code> instead of <code>:shell</code>, inspect the tapped values, then return.</p>
+
+<pre><code>clojure -A:dev</code></pre>
+
+<pre><code><span class="com">;; from package.clj</span>
+(comment
+  (debug tap-values
+    (create [] (merge options/walter
+                      {::bc/env :repl
+                       ::tools-once/tofu-opts          (workflow/parse-args <span class="str">"render"</span>)
+                       ::tools-walter/ansible-opts     (workflow/parse-args <span class="str">"render"</span>)
+                       ::tools-once/ansible-local-opts (workflow/parse-args <span class="str">"render"</span>)
+                       ::run/shell-opts {:err *err* :out *out*}})))
+  (-&gt; tap-values))</code></pre>
+
+    <p>This runs <em>just</em> the render phase of every stage and stashes intermediate state in <code>tap-values</code> for inspection. Handy when debugging a template or data-fn change without spinning up a VM.</p>
+
+    <p>To preview <em>just</em> the Ansible data shape:</p>
+
+<pre><code>(require '[io.github.amiorin.walter.ansible :as a])
+(a/data-fn {} {})
+(a/render :inventory (a/data-fn {} {}))</code></pre>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="structure">
+    <h2>Project structure</h2>
+
+<pre><code>walter/
+├── bb.edn                              <span class="com"># Babashka tasks &amp; :init opts</span>
+├── deps.edn                            <span class="com"># Clojure deps (big-config, once, cheshire, clj-yaml…)</span>
+├── devenv.nix                          <span class="com"># Local dev environment (Nix)</span>
+├── .envrc / .envrc.private.example     <span class="com"># direnv hooks &amp; secrets template</span>
+├── README.md
+├── CLAUDE.md                           <span class="com"># Guidance for AI coding assistants</span>
+│
+├── src/
+│   ├── clj/io/github/amiorin/walter/
+│   │   ├── package.clj                 <span class="com"># Top-level walter workflow (create / delete)</span>
+│   │   ├── tools.clj                   <span class="com"># Ansible workflow definition + render transforms</span>
+│   │   ├── ansible.clj                 <span class="com"># data-fn: users / repos / packages / SSH / inventory</span>
+│   │   ├── options.clj                 <span class="com"># Static OCI + S3 defaults</span>
+│   │   └── params.clj                  <span class="com"># opts-fn composition</span>
+│   │
+│   └── resources/io/github/amiorin/walter/tools/
+│       ├── tofu/
+│       │   ├── oci/main.tf             <span class="com"># OCI Ampere VM template</span>
+│       │   └── hcloud/main.tf          <span class="com"># Hetzner cx23 template</span>
+│       └── ansible/
+│           ├── ansible.cfg
+│           ├── main.yml                <span class="com"># admin → root role,  users → users role</span>
+│           └── roles/
+│               ├── root/
+│               │   ├── tasks/main.yml  <span class="com"># sudoers, nix, docker, asdf, apt, caddy, redis</span>
+│               │   ├── tasks/caddy.yml
+│               │   ├── tasks/redis.yml
+│               │   ├── handlers/main.yml
+│               │   └── files/          <span class="com"># Z50-devbox.sh, direnv.sh, ssh-agent.sh, zellij.sh</span>
+│               └── users/
+│                   ├── tasks/main.yml  <span class="com"># devbox, asdf, repos, dotfiles, atuin, doom</span>
+│                   └── files/xterm-ghostty
+│
+├── env/dev/clj/user.clj                <span class="com"># REPL entry namespace</span>
+├── test/                               <span class="com"># Cognitect test-runner</span>
+└── .dist/                              <span class="com"># (generated) profile-&lt;hash&gt;/ rendered trees</span></code></pre>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="license">
+    <h2>License</h2>
+    <p>Copyright © 2026 Alberto Miorin. Distributed under the <a href="https://opensource.org/license/mit">MIT License</a>.</p>
     <hr>
+    <p class="header-meta">Single-page manual generated from the repo. For the source of truth, read <code>bb.edn</code>, <code>src/clj/io/github/amiorin/walter/</code>, and <code>src/resources/io/github/amiorin/walter/tools/</code>.</p>
+  </section>
 
-    <h2 id="license">License <a class="anchor" href="#license">#</a></h2>
-    <p>Copyright © 2024 Alberto Miorin. Distributed under the <a href="https://opensource.org/license/mit">MIT License</a>.</p>
-
-    <footer>
-      <p>Single-page manual generated from the repo. For the source of truth, read <code>bb.edn</code>, <code>src/clj/io/github/amiorin/walter/</code>, and <code>src/resources/io/github/amiorin/walter/tools/</code>.</p>
-    </footer>
   </main>
 </div>
 </body>

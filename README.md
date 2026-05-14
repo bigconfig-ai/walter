@@ -77,6 +77,6 @@ You can modify `ansible.clj` to change the list of default packages or the repos
 
 ## License
 
-Copyright © 2024 Alberto Miorin.
+Copyright © 2026 Alberto Miorin.
 
 Distributed under the MIT License.
